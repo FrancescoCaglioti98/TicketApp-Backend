@@ -8,13 +8,14 @@ use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class UsersTokens extends Controller
 {
 
     use HttpResponses;
 
-    public function login( Request $userInfo )
+    public function login( Request $userInfo ) : JsonResponse
     {
 
         $userEmail = $userInfo->email;
