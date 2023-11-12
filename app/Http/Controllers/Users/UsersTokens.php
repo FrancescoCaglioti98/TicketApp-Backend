@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Users;
 
+use Carbon\Carbon;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Traits\HttpResponses;
@@ -40,7 +41,11 @@ class UsersTokens extends Controller
 
         $response = [
             "user" => $user,
-            "token" => $user->createToken('authToken')->plainTextToken,
+            "token" => $user->createToken(
+                $user->name.'_'.Carbon::now(),
+                ['*'],
+                Carbon::now()->addDays(6)
+            )->plainTextToken,
         ];
 
         return $this->success(
