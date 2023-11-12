@@ -1,13 +1,17 @@
 <?php
 
-use App\Http\Controllers\Users\UsersTokens;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Users\UsersTokens;
 
 
-Route::post("/createToken", [UsersTokens::class, 'generateToken']);
+Route::post("/login", [UsersTokens::class, 'login']);
 
+Route::group(['middleware' => ['auth:sanctum']], function () {
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('/user', function(){
+       return User::all(); 
+    });
+
 });

@@ -14,7 +14,7 @@ class UsersTokens extends Controller
 
     use HttpResponses;
 
-    public function generateToken( Request $userInfo )
+    public function login( Request $userInfo )
     {
 
         $userEmail = $userInfo->email;
