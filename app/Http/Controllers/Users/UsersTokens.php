@@ -35,7 +35,7 @@ class UsersTokens extends Controller
         DB::table('personal_access_tokens')->where( 'tokenable_id', $user->id )->delete();
 
         //Solo gli utenti attivi possono accedere
-        if( $user->is_active ) {
+        if( !$user->is_active ) {
             return $this->error(
                 data: [],
                 message: "You cannot access, your account is disabled.",
