@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
             "last_name" => "Caglioti",
             "email" => "dummy@mail.it",
             "password" => Hash::make('Password01!'),
-            "is_admin" => 1
+            "is_admin" => 1,
+            "is_active" => 1,
         ]);
 
     }
