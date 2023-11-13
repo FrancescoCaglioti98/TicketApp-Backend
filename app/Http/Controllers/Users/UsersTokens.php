@@ -23,22 +23,25 @@ class UsersTokens extends Controller
 
         $user = User::where( "email", $userEmail )->first();
 
-        if( empty( $user ) ) {
+        if( empty( $user ) || !password_verify( $userPassword, $user->password ) ) {
             return $this->error(
                 data: [],
                 message: "Email or Password does not match",
                 code: 400
             );
-        } else if ( !password_verify( $userPassword, $user->password ) ) {
-            return $this->error(
-                data: [],
-                message: "Email or Password does not match",
-                code: 400
-            );
-        } 
+        }
 
         //Cancellazione di tutti i TOKEN pregressi
         DB::table('personal_access_tokens')->where( 'tokenable_id', $user->id )->delete();
+
+        //Solo gli utenti attivi possono accedere
+        if( $user->is_active ) {
+            return $this->error(
+                data: [],
+                message: "You cannot access, your account is disabled.",
+                code: 403
+            );
+        }
 
         $response = [
             "user" => $user,

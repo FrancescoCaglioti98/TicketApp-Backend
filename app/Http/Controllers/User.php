@@ -22,6 +22,10 @@ class User extends Controller
         $userCreation->last_name = $userInfo->last_name;
         $userCreation->email = $userInfo->email;
         $userCreation->is_admin = $userInfo->is_admin ?? 0;
+        $userCreation->is_active = $userInfo->is_active ?? 0;
+        if( isset( $userInfo->lang ) ) {
+            $userCreation->lang = $userInfo->lang;
+        }
 
         /**
          * @todo : Aggiungere sistema di invio automatico delle password generate alla persona interessata
@@ -59,8 +63,17 @@ class User extends Controller
         
         $user = UserModel::where('id', $userId)->first();
 
+        if( empty( $user ) ) {
+            return $this->error(
+                data: [],
+                message: "Unknow User",
+                code: 400
+            );
+        }
+
         $user->name = $request->name ?? $user->name;
         $user->last_name = $request->last_name ?? $user->last_name;
+        $user->lang = $request->lang ?? $user->lang;
 
         if( $user->save() ) {
             return $this->success(
@@ -77,5 +90,46 @@ class User extends Controller
         );
 
     }
+
+    public function changeUserStatus($userId, Request $request) : JsonResponse
+    {
+
+        if( !$request->user()->is_admin ) {
+            return $this->error(
+                data:[],
+                message:"Unauthorized",
+                code: 403
+            );
+        }
+
+        $user = UserModel::where('id', $userId)->first();
+        if( empty( $user ) ) {
+            return $this->error(
+                data: [],
+                message: "Unknow User",
+                code: 400
+            );
+        }
+
+        $user->is_active = !$user->is_active;
+
+        if( $user->save() ) {
+            return $this->success(
+                data: [
+                    "user" => $user
+                ],
+                message: 'Changed User Status',
+                code: 200
+            );          
+        }
+
+        return $this->error(
+            data: [],
+            message: "Error in the update",
+            code: 500
+        );
+        
+    }
+
 
 }

@@ -12,7 +12,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Creazione utente
     Route::post( '/user', [User::class, 'createUser']);
 
-    //Modifica utente
+    //Modifiche utente
     Route::patch( '/user/{userId}', [User::class, 'modifyUser']);
+    Route::post( '/user/{userId}/changeUserStatus', [User::class, 'changeUserStatus']);
 
 });
