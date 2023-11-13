@@ -13,6 +13,23 @@ class User extends Controller
 {
     use HttpResponses;
 
+    public function getUserInfo( ?int $userId = null ) : JsonResponse
+    {
+
+        if( $userId != null ) {
+            $user = $this->getUserById( $userId )->toArray();
+        } else {
+            $user = UserModel::all()->toArray();
+        }
+
+
+        return $this->success(
+            data: $user
+        );
+
+    }
+
+
     public function createUser(UserRequest $userInfo): JsonResponse
     {
 

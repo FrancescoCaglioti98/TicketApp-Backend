@@ -14,6 +14,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
      * USER
      */
 
+    //Recupero Utenti/Utente
+    Route::get( '/user/{userId?}', [User::class, 'getUserInfo'] );
+    
     //Creazione utente
     Route::post( '/user', [User::class, 'createUser']);
 
