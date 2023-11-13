@@ -27,11 +27,7 @@ class User extends Controller
             $userCreation->lang = $userInfo->lang;
         }
 
-        /**
-         * @todo : Aggiungere sistema di invio automatico delle password generate alla persona interessata
-         * @todo : Aggiungere creazione causuale delle password
-         */
-        $userCreation->password = "Password01!";
+        $userCreation->password = $this->generateUserPassword();
 
         if ($userCreation->save()) {
             return $this->success(
@@ -48,7 +44,7 @@ class User extends Controller
         );
     }
 
-    public function modifyUser($userId, Request $request) : JsonResponse
+    public function modifyUser( int $userId, Request $request) : JsonResponse
     {
      
         //Le informazioni di un utente possono essere modificate solo da un admin o da lui stesso
@@ -61,7 +57,7 @@ class User extends Controller
             );
         }
         
-        $user = UserModel::where('id', $userId)->first();
+        $user = $this->getUserById($userId);
 
         if( empty( $user ) ) {
             return $this->error(
@@ -91,7 +87,7 @@ class User extends Controller
 
     }
 
-    public function changeUserStatus($userId, Request $request) : JsonResponse
+    public function changeUserStatus( int $userId, Request $request) : JsonResponse
     {
 
         if( !$request->user()->is_admin ) {
@@ -102,7 +98,8 @@ class User extends Controller
             );
         }
 
-        $user = UserModel::where('id', $userId)->first();
+        $user = $this->getUserById($userId);
+
         if( empty( $user ) ) {
             return $this->error(
                 data: [],
@@ -130,6 +127,58 @@ class User extends Controller
         );
         
     }
+    
+    public function forceNewPassword( int $userId, Request $request ) : JsonResponse
+    {
 
+        if( !$request->user()->is_admin ) {
+            return $this->error(
+                data: [],
+                message: 'Unauthorized',
+                code: 401
+            );
+        }
+
+        $newPassword = $this->generateUserPassword();
+
+        $user = $this->getUserById( $userId );
+
+        $user->password = $newPassword;
+
+        if( $user->save() ) {
+            return $this->success(
+                data: [],
+                message: 'New Password Generated',
+                code: 200
+            );
+        }
+        
+        return $this->error(
+            data: [],
+            message: "Error in the password generation",
+            code: 500
+        );
+
+    }
+
+
+    
+
+    private function generateUserPassword() : string
+    {
+
+        /**
+         * @todo : Aggiungere sistema di invio automatico delle password generate alla persona interessata
+         * @todo : Aggiungere creazione causuale delle password
+         */
+        $password = "Password01!";
+
+        return $password;
+    }
+
+    private function getUserById( int $userId ) : UserModel
+    {
+        return UserModel::where('id', $userId)->first();
+    }
 
 }
