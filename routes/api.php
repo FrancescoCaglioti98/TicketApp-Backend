@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Group;
 use App\Http\Controllers\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UsersTokens;
@@ -24,5 +25,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch( '/user/{userId}', [User::class, 'modifyUser']);
     Route::post( '/user/{userId}/changeUserStatus', [User::class, 'changeUserStatus']);
     Route::post( '/user/{userId}/forceNewPassword', [ User::class, 'forceNewPassword' ] );
+
+
+
+    /**
+     * GROUP
+     */
+    Route::get( 'group/{groupId?}', [Group::class, 'getGroup'] );
 
 });
