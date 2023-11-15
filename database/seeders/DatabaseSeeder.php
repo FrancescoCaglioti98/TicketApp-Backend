@@ -29,5 +29,22 @@ class DatabaseSeeder extends Seeder
             "is_active" => 1,
         ]);
 
+        \App\Models\GroupModel::factory()->create([
+            "name" => "Default Group",
+            "description" => "First group to be created",
+            "user_admin_id" => 1
+        ]);
+
+
+        
+        /**
+         * The Group Admin should also need to be a group member?
+         */
+
+        \App\Models\GroupToUserModel::factory()->create([
+            "user_id" => 1,
+            "group_id" => 1
+        ]);
+
     }
 }
