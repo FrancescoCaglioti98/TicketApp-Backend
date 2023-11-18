@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "b5b63647-470c-4336-bf64-147d62c75136",
+		"name": "TicketApp-Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31098828"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseData = pm.response.json();\r",
+									"var token = responseData.data.token;\r",
+									"pm.collectionVariables.set(\"globalToken\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "{{email}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_api_endpoint}}login",
+							"host": [
+								"{{base_api_endpoint}}login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "GetUsers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_api_endpoint}}user",
+							"host": [
+								"{{base_api_endpoint}}user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_api_endpoint}}user/{{userId}}",
+							"host": [
+								"{{base_api_endpoint}}user"
+							],
+							"path": [
+								"{{userId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Francesco",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Caglioti",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "dummy4@mail.it",
+									"type": "text"
+								},
+								{
+									"key": "is_admin",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "is_active",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "EN",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_api_endpoint}}user",
+							"host": [
+								"{{base_api_endpoint}}user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ModifyUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "New Name",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "",
+									"description": "New Last Name",
+									"type": "text"
+								},
+								{
+									"key": "lang",
+									"value": "",
+									"description": "User default lang ( default IT )",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_api_endpoint}}user/{{userInModify}}",
+							"host": [
+								"{{base_api_endpoint}}user"
+							],
+							"path": [
+								"{{userInModify}}"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "NewName",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activate/DeactivateUser",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_api_endpoint}}user/{{userId}}/changeUserStatus",
+							"host": [
+								"{{base_api_endpoint}}user"
+							],
+							"path": [
+								"{{userId}}",
+								"changeUserStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForceNewPassword",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_api_endpoint}}user/{{userId}}/forceNewPassword",
+							"host": [
+								"{{base_api_endpoint}}user"
+							],
+							"path": [
+								"{{userId}}",
+								"forceNewPassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Groups",
+			"item": [
+				{
+					"name": "getGroups",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_api_endpoint}}group",
+							"host": [
+								"{{base_api_endpoint}}group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getGroup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_api_endpoint}}group/{{groupId}}",
+							"host": [
+								"{{base_api_endpoint}}group"
+							],
+							"path": [
+								"{{groupId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createGroup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "TestName",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "DESCRIPTION",
+									"type": "text"
+								},
+								{
+									"key": "user_admin_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_api_endpoint}}group",
+							"host": [
+								"{{base_api_endpoint}}group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "modifyGroup",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{globalToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "TestName",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "DESCRIPTION",
+									"type": "text"
+								},
+								{
+									"key": "user_admin_id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_api_endpoint}}group/{{groupId}}",
+							"host": [
+								"{{base_api_endpoint}}group"
+							],
+							"path": [
+								"{{groupId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_api_endpoint",
+			"value": "http://localhost:8000/api/",
+			"type": "string"
+		},
+		{
+			"key": "globalToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "dummy@mail.it",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "Password01!",
+			"type": "string"
+		},
+		{
+			"key": "userInModify",
+			"value": "3"
+		},
+		{
+			"key": "userId",
+			"value": "2"
+		},
+		{
+			"key": "groupId",
+			"value": "1"
+		}
+	]
+}

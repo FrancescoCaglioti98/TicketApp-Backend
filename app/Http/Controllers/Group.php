@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GroupRequest;
 use App\Models\GroupModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class Group extends Controller
 {
@@ -27,12 +27,56 @@ class Group extends Controller
 
     }
 
+    public function createGroup( GroupRequest $groupInfo ) : JsonResponse
+    {
+
+        $group = new GroupModel();
+
+        $group->name = $groupInfo->name;
+        $group->description = $groupInfo->description ?? '';
+        $group->user_admin_id = $groupInfo->user_admin_id;
+
+        if( $group->save() ) {
+            return $this->success(
+                data: $group->toArray(),
+                message: 'Group Created',
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: "Error in the Group creation",
+            code: 500
+        );
+
+    }
+
+    public function modifyGroup( int $groupId, GroupRequest $groupInfo )
+    {
+
+        $group = $this->getGroupByID( $groupId );
+
+    }
+
 
 
 
     private function getGroupByID( int $groupId ) : GroupModel
     {
         return GroupModel::where( 'id', $groupId )->first() ;
+    }
+
+    public static function isUserGroupAdmin( int $userId, int $groupId ) : bool
+    {
+
+        $groupInfo = ( new Group )->getGroupByID( $groupId );
+
+        if( $groupInfo->user_admin_id == $userId ) {
+            return true;
+        }
+
+        return false;
     }
 
 }

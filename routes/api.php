@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     /**
      * GROUP
      */
-    Route::get( 'group/{groupId?}', [Group::class, 'getGroup'] );
+    Route::get( '/group/{groupId?}', [Group::class, 'getGroup'] );
 
+    Route::post( '/group', [Group::class, 'createGroup'] );
+    Route::patch( '/group/{groupId}', [Group::class, 'modifyGroup'] );
 });
