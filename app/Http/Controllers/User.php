@@ -17,14 +17,22 @@ class User extends Controller
     {
 
         if( $userId != null ) {
-            $user = $this->getUserById( $userId )->toArray();
+            $user = $this->getUserById( $userId );
         } else {
-            $user = UserModel::all()->toArray();
+            $user = UserModel::all();
+        }
+
+        if( empty( $user ) && $userId != null ) {
+            return $this->error(
+                data: [],
+                message: "Unknow user",
+                code: 404
+            );
         }
 
 
         return $this->success(
-            data: $user
+            data: $user->toArray()
         );
 
     }
@@ -160,6 +168,14 @@ class User extends Controller
 
         $user = $this->getUserById( $userId );
 
+        if(empty($user)) {
+            return $this->error(
+                data:[],
+                message:'Unknow User',
+                code: 404
+            );
+        }
+
         $user->password = $newPassword;
 
         if( $user->save() ) {
@@ -193,7 +209,7 @@ class User extends Controller
         return $password;
     }
 
-    private function getUserById( int $userId ) : UserModel
+    private function getUserById( int $userId ) : ?UserModel
     {
         return UserModel::where('id', $userId)->first();
     }

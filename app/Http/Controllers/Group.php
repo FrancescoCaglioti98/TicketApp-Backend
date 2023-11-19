@@ -16,13 +16,27 @@ class Group extends Controller
     {
 
         if( $groupId != null ) {
-            $result = $this->getGroupByID( $groupId )->toArray();
+            $result = $this->getGroupByID( $groupId );
         } else {
-            $result = GroupModel::all()->toArray();
+            $result = GroupModel::all();
+        }
+
+        if( empty($result) && $groupId != null ) {
+            return $this->error(
+                data: [],
+                message: 'Unknow Group',
+                code: 404
+            );
+        } else if( empty($result) ) {
+            return $this->error(
+                data: [],
+                message: 'No Group',
+                code: 404
+            );
         }
 
         return $this->success(
-            data: $result,
+            data: $result->toArray(),
         );
 
     }
@@ -56,6 +70,14 @@ class Group extends Controller
     {
 
         $group = $this->getGroupByID( $groupId );
+
+        if(empty($group)) {
+            return $this->error(
+                data: [],
+                message: 'Unknow Group',
+                code: 404
+            );
+        }
 
     }
 
