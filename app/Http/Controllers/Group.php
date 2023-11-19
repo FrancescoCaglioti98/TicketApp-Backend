@@ -6,6 +6,8 @@ use App\Http\Requests\GroupRequest;
 use App\Models\GroupModel;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 
 class Group extends Controller
 {
@@ -66,7 +68,7 @@ class Group extends Controller
 
     }
 
-    public function modifyGroup( int $groupId, GroupRequest $groupInfo )
+    public function modifyGroup( int $groupId, Request $groupInfo )
     {
 
         $group = $this->getGroupByID( $groupId );
@@ -78,6 +80,26 @@ class Group extends Controller
                 code: 404
             );
         }
+
+        if( isset( $groupInfo->name ) && trim( $groupInfo->name ) != '' ) {
+            $group->name = $groupInfo->name;
+        }
+
+        $group->description = $groupInfo->description ?? $group->description;
+
+        if( $group->save() ) {
+            return $this->success(
+                data: $group->toArray(),
+                message: 'Group Updated',
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: "Error in the group update",
+            code: 500
+        );
 
     }
 
