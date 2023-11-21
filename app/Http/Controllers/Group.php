@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\GroupRequest;
 use App\Models\GroupModel;
-use App\Traits\HttpResponses;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
+use App\Models\GroupToUserModel;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\GroupRequest;
+use Illuminate\Database\Eloquent\Collection;
 
 
 class Group extends Controller
@@ -104,11 +106,37 @@ class Group extends Controller
     }
 
 
+    //SEZIONE UTENTI
+
+    public function getGroupUsersInfo( int $groupId )
+    {
+
+        $users = $this->getGroupUsers( $groupId );
+
+        $return = [];
+        foreach ($users as $key => $user) {
+            $return[] = (new User())->getUserById( $user->user_id )->toArray();
+        }
+
+        return $this->success(
+            data: $return,
+            message: "User List",
+            code: 200
+        );
+    }
+
+    
+
 
 
     private function getGroupByID( int $groupId ) : GroupModel
     {
         return GroupModel::where( 'id', $groupId )->first() ;
+    }
+
+    private function getGroupUsers( int $groupId ) : Collection
+    {
+        return GroupToUserModel::where( 'group_id', $groupId )->get();
     }
 
     public static function isUserGroupAdmin( int $userId, int $groupId ) : bool

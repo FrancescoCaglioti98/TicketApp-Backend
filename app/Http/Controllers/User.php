@@ -209,7 +209,7 @@ class User extends Controller
         return $password;
     }
 
-    private function getUserById( int $userId ) : ?UserModel
+    public function getUserById( int $userId ) : ?UserModel
     {
         return UserModel::where('id', $userId)->first();
     }
