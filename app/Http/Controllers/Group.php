@@ -76,6 +76,15 @@ class Group extends Controller
     public function modifyGroup( int $groupId, Request $groupInfo )
     {
 
+        //Solo ammministratori e admin del gruppo possono aggiungere/togliere un utente
+        if( !$this->canModifyGroup( $groupInfo, $groupId ) ) {
+            return $this->error(
+                data: [],
+                message: 'Can\'t modify group',
+                code: 401
+            );
+        }
+
         $group = $this->getGroupByID( $groupId );
 
         if(empty($group)) {
@@ -177,6 +186,42 @@ class Group extends Controller
         
     }
 
+    public function removeUserFromGroup( int $groupId, int $userId, Request $request )
+    {
+
+        //Solo ammministratori e admin del gruppo possono aggiungere/togliere un utente
+        if( !$this->canModifyGroup( $request, $groupId ) ) {
+            return $this->error(
+                data: [],
+                message: 'Can\'t modify group',
+                code: 401
+            );
+        } else if ( $this->isGroupAdmin( $groupId, $userId ) ) {
+            return $this->error(
+                data: [],
+                message: 'Can\'t remove group admin',
+                code: 401
+            );
+        }
+
+        $result = GroupToUserModel::where( 'group_id', $groupId )->where( 'user_id', $userId )->delete();
+
+        if( $result ) {
+            return $this->success(
+                data: [],
+                message: 'User removed',
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: 'Error in the user remove',
+            code: 500
+        );
+
+    }
+
 
 
     private function getGroupByID( int $groupId ) : GroupModel
@@ -206,10 +251,19 @@ class Group extends Controller
 
         if( $request->user()->is_admin ) {
             return true;
+        } else if( $this->isGroupAdmin( $groupId, $request->user()->id ) ) {
+            return true;
         }
 
+        return false;
+
+    }
+
+    private function isGroupAdmin( int $groupId, int $userId )
+    {
+
         $groupInfo = $this->getGroupByID( $groupId );
-        if( $groupInfo->user_admin_id == $request->user()->id ) {
+        if( $groupInfo->user_admin_id == $userId ) {
             return true;
         }
 

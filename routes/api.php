@@ -39,5 +39,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     //Gestione degli utenti assegnati ad un grupppo
     Route::get( '/group/{groupId}/user', [Group::class, 'getGroupUsersInfo'] );
     Route::post( '/group/{groupId}/user/{userId}', [Group::class, 'addUserToGroup'] );
+    Route::delete( '/group/{groupId}/user/{userId}', [Group::class, 'removeUserFromGroup'] );
 
 });
