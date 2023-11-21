@@ -8,6 +8,8 @@ use App\Traits\HttpResponses;
 use App\Models\GroupToUserModel;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\GroupRequest;
+use App\Models\User as UserModel;
+use App\Http\Controllers\User;
 use Illuminate\Database\Eloquent\Collection;
 
 
@@ -108,7 +110,7 @@ class Group extends Controller
 
     //SEZIONE UTENTI
 
-    public function getGroupUsersInfo( int $groupId )
+    public function getGroupUsersInfo( int $groupId ) : JsonResponse
     {
 
         $users = $this->getGroupUsers( $groupId );
@@ -125,7 +127,44 @@ class Group extends Controller
         );
     }
 
-    
+    public function addUserToGroup( int $groupId, int $userId ) : JsonResponse
+    {
+
+        $alreadyExist = GroupTouserModel::where( 'group_id', $groupId)->where( 'user_id', $userId )->first();
+
+        if( !empty($alreadyExist) ) {
+            return $this->error(
+                data:[],
+                message:'User already present',
+                code: 400
+            );
+        } else if ( empty( UserModel::where('id', $userId)->first() ) ) {
+            return $this->error(
+                data:[],
+                message:'Unknow User',
+                code: 400
+            );
+        }
+
+        $userGroup = new GroupToUserModel();
+        $userGroup->group_id = $groupId;
+        $userGroup->user_id = $userId;
+
+        if( $userGroup->save() ){
+            return $this->success(
+                data: [],
+                message: "User added",
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: "Error in the user add",
+            code: 500
+        );
+        
+    }
 
 
 
