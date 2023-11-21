@@ -12,6 +12,7 @@ use App\Models\User as UserModel;
 use App\Http\Controllers\User;
 use Illuminate\Database\Eloquent\Collection;
 
+use function PHPSTORM_META\map;
 
 class Group extends Controller
 {
@@ -127,8 +128,18 @@ class Group extends Controller
         );
     }
 
-    public function addUserToGroup( int $groupId, int $userId ) : JsonResponse
+    public function addUserToGroup( int $groupId, int $userId, Request $request ) : JsonResponse
     {
+
+        //Solo ammministratori e admin del gruppo possono aggiungere/togliere un utente
+        if( !$this->canModifyGroup( $request, $groupId ) ) {
+            return $this->error(
+                data: [],
+                message: 'Can\'t modify group',
+                code: 401
+            );
+        }
+
 
         $alreadyExist = GroupTouserModel::where( 'group_id', $groupId)->where( 'user_id', $userId )->first();
 
@@ -188,6 +199,22 @@ class Group extends Controller
         }
 
         return false;
+    }
+
+    private function canModifyGroup( Request $request, int $groupId )
+    {
+
+        if( $request->user()->is_admin ) {
+            return true;
+        }
+
+        $groupInfo = $this->getGroupByID( $groupId );
+        if( $groupInfo->user_admin_id == $request->user()->id ) {
+            return true;
+        }
+
+        return false;
+
     }
 
 }
