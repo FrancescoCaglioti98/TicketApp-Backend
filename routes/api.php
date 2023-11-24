@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Group;
 use App\Http\Controllers\User;
 use Illuminate\Support\Facades\Route;
@@ -40,5 +41,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get( '/group/{groupId}/user', [Group::class, 'getGroupUsersInfo'] );
     Route::post( '/group/{groupId}/user/{userId}', [Group::class, 'addUserToGroup'] );
     Route::delete( '/group/{groupId}/user/{userId}', [Group::class, 'removeUserFromGroup'] );
+
+
+    /**
+     * CATEGORY
+     */
+    Route::post( '/category', [CategoryController::class, 'createCategory'] );
 
 });
