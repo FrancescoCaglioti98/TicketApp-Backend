@@ -18,11 +18,11 @@ class CategoryController extends Controller
      * Tutti gli utenti possono vedere le categorie, non solo gli amministratori
      * È importante per il fatto che le categorie sono la discriminante per l'apertura dei ticket
      */
-    public function getCategory( ?int $categoryId = null)
+    public function getCategory(?int $categoryId = null): JsonResponse
     {
 
         if ($categoryId != null) {
-            $category = $this->getCategoryByID( $categoryId );
+            $category = $this->getCategoryByID($categoryId);
         } else {
             $category = Category::all();
         }
@@ -32,7 +32,6 @@ class CategoryController extends Controller
             message: '',
             code: 200
         );
-
     }
 
     public function createCategory(CategoryRequest $categoryInfo): JsonResponse
@@ -57,8 +56,38 @@ class CategoryController extends Controller
         );
     }
 
-    private function getCategoryByID( int $categoryId ) : Category
+    public function modifyCategory( int $categoryId, CategoryRequest $categoryInfo): JsonResponse
     {
-        return Category::where( 'id', $categoryId )->first();
+
+        $category = $this->getCategoryByID($categoryId);
+
+        $category->name = $categoryInfo->name ?? $category->name;
+        $category->description = $categoryInfo->description ?? $category->description;
+
+        if( $category->save() ) {
+            return $this->success(
+                data: $category->toArray(),
+                message: 'Category Updated',
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: 'Error in the category update',
+            code: 500
+        );
+
+    }
+
+
+
+
+
+
+
+    private function getCategoryByID(int $categoryId): Category
+    {
+        return Category::where('id', $categoryId)->first();
     }
 }
