@@ -50,4 +50,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post( '/category', [CategoryController::class, 'createCategory'] );
     Route::patch( '/category/{categoryId}', [CategoryController::class, 'modifyCategory'] );
 
+    /**
+     * Categories to groups
+     */
+    Route::get( '/category/{categoryId}/group', [CategoryController::class, 'getCategoryGroups'] );
+    Route::post( '/category/{categoryId}/group/{groupId}', [CategoryController::class, 'addCategoryGroup'] );
+    Route::delete( '/category/{categoryId}/group/{groupId}', [CategoryController::class, 'removeCategoryGroups'] );
+
 });

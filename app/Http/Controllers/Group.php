@@ -224,7 +224,7 @@ class Group extends Controller
 
 
 
-    private function getGroupByID( int $groupId ) : GroupModel
+    public function getGroupByID( int $groupId ) : GroupModel
     {
         return GroupModel::where( 'id', $groupId )->first() ;
     }

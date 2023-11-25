@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\CategoryToGroups;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -80,6 +81,25 @@ class CategoryController extends Controller
 
     }
 
+
+    public function getCategoryGroups( int $categoryId )
+    {
+
+        $groups = CategoryToGroups::where("category_id", $categoryId)->get();
+
+        $response = [];
+        foreach ($groups as $key => $value) {
+            $response[] = ( new Group() )->getGroupByID( $value->group_id );
+        }
+
+        return $this->success(
+            data: $response,
+            message: '',
+            code: 200
+        );
+
+
+    }
 
 
 
