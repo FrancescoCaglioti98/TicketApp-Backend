@@ -56,7 +56,7 @@ class User extends Controller
 
         if ($userCreation->save()) {
             return $this->success(
-                data: [],
+                data: $userCreation->toArray(),
                 message: "User Created",
                 code: 200
             );
