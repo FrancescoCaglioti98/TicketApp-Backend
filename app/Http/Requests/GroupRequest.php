@@ -13,7 +13,7 @@ class GroupRequest extends FormRequest
     {
 
         if( $this->user()->is_admin ) {
-            // return true;
+            return true;
         }
 
         //se non si tratta di un admin devo verificare che la richiesta stia venendo fatta dall'admin del gruppo in questione ( se passato )
