@@ -195,7 +195,11 @@ class User extends Controller
     }
 
 
-    
+    public function isUserActive( int $userId ) : null|bool
+    {
+        $user = $this->getUserById( $userId );
+        return $user?->is_active;
+    }
 
     private function generateUserPassword() : string
     {

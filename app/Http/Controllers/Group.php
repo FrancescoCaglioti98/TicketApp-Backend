@@ -50,11 +50,19 @@ class Group extends Controller
 
     public function createGroup( GroupRequest $groupInfo ) : JsonResponse
     {
-
         $group = new GroupModel();
 
         $group->name = $groupInfo->name;
         $group->description = $groupInfo->description ?? '';
+
+        if( !(new User())->isUserActive( $groupInfo->user_admin_id ) ) {
+            return $this->error(
+                data: [],
+                message: 'User not active',
+                code: 400
+            );
+        }
+
         $group->user_admin_id = $groupInfo->user_admin_id;
 
         if( $group->save() ) {
@@ -73,7 +81,7 @@ class Group extends Controller
 
     }
 
-    public function modifyGroup( int $groupId, Request $groupInfo )
+    public function modifyGroup( int $groupId, Request $groupInfo ) : JsonResponse
     {
 
         //Solo ammministratori e admin del gruppo possono aggiungere/togliere un utente
@@ -94,11 +102,8 @@ class Group extends Controller
                 code: 404
             );
         }
-
-        if( isset( $groupInfo->name ) && trim( $groupInfo->name ) != '' ) {
-            $group->name = $groupInfo->name;
-        }
-
+        
+        $group->name = $groupInfo->name ?? $group->name;
         $group->description = $groupInfo->description ?? $group->description;
 
         if( $group->save() ) {
@@ -112,6 +117,37 @@ class Group extends Controller
         return $this->error(
             data: [],
             message: "Error in the group update",
+            code: 500
+        );
+
+    }
+
+    public function changeGroupAdmin( int $groupId, int $userId ) : JsonResponse
+    {
+
+        $group = $this->getGroupByID( $groupId );
+
+        if( !( new User() )->isUserActive( $userId ) ) {
+            return $this->error(
+                data: [],
+                message: 'User is not active',
+                code: 400
+            );
+        }
+
+        $group->user_admin_id = $userId;
+
+        if( $group->save() ) {
+            return $this->success(
+                data: $group->toArray(),
+                message: 'Admin User Changed',
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: "Error in the change",
             code: 500
         );
 

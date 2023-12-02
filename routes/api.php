@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post( '/group', [Group::class, 'createGroup'] );
     Route::patch( '/group/{groupId}', [Group::class, 'modifyGroup'] );
+    Route::patch( '/group/{groupId}/changeAdmin/{userId}', [Group::class, 'changeGroupAdmin'] );
     
     //Gestione degli utenti assegnati ad un grupppo
     Route::get( '/group/{groupId}/user', [Group::class, 'getGroupUsersInfo'] );
