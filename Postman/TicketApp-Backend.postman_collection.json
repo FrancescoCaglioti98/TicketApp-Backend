@@ -145,22 +145,22 @@
 							"urlencoded": [
 								{
 									"key": "name",
-									"value": "Francesco",
+									"value": "Leonardo",
 									"type": "text"
 								},
 								{
 									"key": "last_name",
-									"value": "Caglioti",
+									"value": "Turtle",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "dummy4@mail.it",
+									"value": "dummy3@mail.it",
 									"type": "text"
 								},
 								{
 									"key": "is_admin",
-									"value": "1",
+									"value": "0",
 									"type": "text"
 								},
 								{
@@ -170,7 +170,7 @@
 								},
 								{
 									"key": "lang",
-									"value": "EN",
+									"value": "IT",
 									"type": "text"
 								}
 							]
@@ -235,13 +235,6 @@
 							],
 							"path": [
 								"{{userInModify}}"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "NewName",
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -321,170 +314,605 @@
 			"name": "Groups",
 			"item": [
 				{
-					"name": "getGroups",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{globalToken}}",
-									"type": "string"
+					"name": "GroupUsers",
+					"item": [
+						{
+							"name": "getGroupUsers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}group/{{groupId}}/user",
+									"host": [
+										"{{base_api_endpoint}}group"
+									],
+									"path": [
+										"{{groupId}}",
+										"user"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_api_endpoint}}group",
-							"host": [
-								"{{base_api_endpoint}}group"
-							]
+						{
+							"name": "addGroupUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}group/{{groupId}}/user/2",
+									"host": [
+										"{{base_api_endpoint}}group"
+									],
+									"path": [
+										"{{groupId}}",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeGroupUser",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}group/{{groupId}}/user/2",
+									"host": [
+										"{{base_api_endpoint}}group"
+									],
+									"path": [
+										"{{groupId}}",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "getGroup",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{globalToken}}",
-									"type": "string"
+					"name": "Groups",
+					"item": [
+						{
+							"name": "getGroups",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}group",
+									"host": [
+										"{{base_api_endpoint}}group"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_api_endpoint}}group/{{groupId}}",
-							"host": [
-								"{{base_api_endpoint}}group"
-							],
-							"path": [
-								"{{groupId}}"
-							]
+						{
+							"name": "getGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}group/{{groupId}}",
+									"host": [
+										"{{base_api_endpoint}}group"
+									],
+									"path": [
+										"{{groupId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "createGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "TestName2",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "DESCRIPTION2",
+											"type": "text"
+										},
+										{
+											"key": "user_admin_id",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_api_endpoint}}group",
+									"host": [
+										"{{base_api_endpoint}}group"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "modifyGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Update Test",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Description Update",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_api_endpoint}}group/{{groupId}}",
+									"host": [
+										"{{base_api_endpoint}}group"
+									],
+									"path": [
+										"{{groupId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "changeGroupAdmin",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Update Test",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Description Update",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_api_endpoint}}group/{{groupId}}/changeAdmin/1",
+									"host": [
+										"{{base_api_endpoint}}group"
+									],
+									"path": [
+										"{{groupId}}",
+										"changeAdmin",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "GetCategories",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}category",
+									"host": [
+										"{{base_api_endpoint}}category"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}category/{{categoryId}}",
+									"host": [
+										"{{base_api_endpoint}}category"
+									],
+									"path": [
+										"{{categoryId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "CreateCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Printer",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "Printer - Generic Error",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_api_endpoint}}category",
+									"host": [
+										"{{base_api_endpoint}}category"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateCategory",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "Mail Error",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "description",
+											"value": "Cambio Descrizione",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_api_endpoint}}category/{{categoryId}}",
+									"host": [
+										"{{base_api_endpoint}}category"
+									],
+									"path": [
+										"{{categoryId}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
-					"name": "createGroup",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{globalToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "TestName",
-									"type": "text"
+					"name": "CategoryGroups",
+					"item": [
+						{
+							"name": "GetCategoryGroups",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "description",
-									"value": "DESCRIPTION",
-									"type": "text"
-								},
-								{
-									"key": "user_admin_id",
-									"value": "1",
-									"type": "text"
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}category/{{categoryId}}/group",
+									"host": [
+										"{{base_api_endpoint}}category"
+									],
+									"path": [
+										"{{categoryId}}",
+										"group"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{base_api_endpoint}}group",
-							"host": [
-								"{{base_api_endpoint}}group"
-							]
+						{
+							"name": "addCategoryGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}category/{{categoryId}}/group/{{groupId}}",
+									"host": [
+										"{{base_api_endpoint}}category"
+									],
+									"path": [
+										"{{categoryId}}",
+										"group",
+										"{{groupId}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeCategoryGroup",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{globalToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_api_endpoint}}category/{{categoryId}}/group/{{groupId}}",
+									"host": [
+										"{{base_api_endpoint}}category"
+									],
+									"path": [
+										"{{categoryId}}",
+										"group",
+										"{{groupId}}"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "modifyGroup",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{globalToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "name",
-									"value": "TestName",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "DESCRIPTION",
-									"type": "text"
-								},
-								{
-									"key": "user_admin_id",
-									"value": "1",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "{{base_api_endpoint}}group/{{groupId}}",
-							"host": [
-								"{{base_api_endpoint}}group"
-							],
-							"path": [
-								"{{groupId}}"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		}
@@ -512,7 +940,7 @@
 	"variable": [
 		{
 			"key": "base_api_endpoint",
-			"value": "http://localhost:8000/api/",
+			"value": "http://ticketapp.backend/api/",
 			"type": "string"
 		},
 		{
@@ -540,6 +968,10 @@
 		},
 		{
 			"key": "groupId",
+			"value": "1"
+		},
+		{
+			"key": "categoryId",
 			"value": "1"
 		}
 	]
