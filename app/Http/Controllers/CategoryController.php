@@ -149,6 +149,51 @@ class CategoryController extends Controller
         );
     }
 
+    public function removeCategoryGroups(int $categoryId, int $groupId): JsonResponse
+    {
+
+        if (!$this->existCategory($categoryId)) {
+            return $this->error(
+                data: [],
+                message: 'Unknow Category',
+                code: 400
+            );
+        }
+
+        if (!(new Group)->existGroup($groupId)) {
+            return $this->error(
+                data: [],
+                message: 'Unknow Group',
+                code: 400
+            );
+        }
+
+        if (!$this->isGroupAssociatedToCategory($categoryId, $groupId)) {
+            return $this->error(
+                data: [],
+                message: 'Group is not assocciated with this category',
+                code: 400
+            );
+        }
+
+        $result = CategoryToGroups::where( 'category_id', $categoryId )->where( 'group_id', $groupId )->delete();
+
+        if( $result ) {
+            return $this->success(
+                data: [],
+                message: 'Group removed',
+                code: 200
+            );
+        }
+
+        return $this->error(
+            data: [],
+            message: 'Error in the Group remove',
+            code: 500
+        );
+
+    }
+
 
 
 
