@@ -12,8 +12,6 @@ use App\Models\User as UserModel;
 use App\Http\Controllers\User;
 use Illuminate\Database\Eloquent\Collection;
 
-use function PHPSTORM_META\map;
-
 class Group extends Controller
 {
     
@@ -260,7 +258,7 @@ class Group extends Controller
 
 
 
-    public function getGroupByID( int $groupId ) : GroupModel
+    public function getGroupByID( int $groupId ) : GroupModel|null
     {
         return GroupModel::where( 'id', $groupId )->first() ;
     }
@@ -305,6 +303,12 @@ class Group extends Controller
 
         return false;
 
+    }
+
+    public function existGroup( int $groupId ) : bool
+    {
+        $group = $this->getGroupByID( $groupId );
+        return ( $group == null ) ? false : true;
     }
 
 }
