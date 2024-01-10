@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Group;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Users\UsersTokens;
@@ -57,5 +58,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get( '/category/{categoryId}/group', [CategoryController::class, 'getCategoryGroups'] );
     Route::post( '/category/{categoryId}/group/{groupId}', [CategoryController::class, 'addCategoryGroup'] );
     Route::delete( '/category/{categoryId}/group/{groupId}', [CategoryController::class, 'removeCategoryGroups'] );
+
+    /**
+     * TICKETS
+     */
+    Route::post( '/ticket', [ TicketController::class, 'createTicket' ] );
 
 });
